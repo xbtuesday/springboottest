@@ -1,5 +1,6 @@
 package com.lpan;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LpanController {
 
+//    @Value("${project.author}")
+//    private String projectAuthor;
+//    @Value("${project.name}")
+//    private String projectName;
+
     @RequestMapping("/lpan")
     public String Lpan() {
-        System.out.println("123");
+//        System.out.println(projectAuthor);
+//        System.out.println(projectName);
         return "Lpan";
     }
 }

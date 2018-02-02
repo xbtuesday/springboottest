@@ -83,6 +83,46 @@
 			<artifactId>druid</artifactId>
 			<version>1.0.29</version>
 		</dependency>
+
+		<!--
+			spring-boot-devtools
+
+			此属性还可以使用触发文件来触发事件
+
+			主要讲spring boot的额外开发工具，spring-boot-devtools 它可以包含在任何项目中，以提供额外的开发功能
+			spring-boot-devtools 是一个为开发者提供的服务的一个模块  最重要的就是 自动应用代码到最新的APP上去  当然原理就是  发现有更新后重新启动应用当然启动速度更快
+			其深层原理是使用两个ClassLoader ，一个ClassLoader用来加载不会改变的类(第三方jar)，另一个ClassLoader加载会更改的类，称为restart ClassLoader，这样有更改时，原来的
+			restart ClassLoader会被丢弃，重新创建一个restartClassLoader，由于需要加载的类相对较少，所以实现了较快的启动时间
+			以下就是使用：
+			1、添加依赖
+		 	devtools可以实现页面热部署（即页面修改后会立即生效，可以在application配置文件中配置  将thymeleaf.cache=false即可）
+		 	实现类文件热部署(类文件修改后不会生效) ，实现对属性文件的热部署
+			2、添加插件
+			在maven的 spring-boot-maven-plguain 中添加<configuration> 配置 <fork>属性 为true
+			 用于将应用打成可直接运行的jar（该jar就是用于生产环境中的jar） 值得注意的是，如果没有引用spring-boot-starter-parent做parent，且采用了上述的第二种方式，这里也要做出相应的改动
+		 	3、需要注意几点：
+		 			1、确认springBoot版本
+		 			2、确认spring-boot-maven-plugin 是否配置了<fork>true</fork>   注意：该配置会使spingboot:run 启动的应用程序无法停止，只需要将true改为false就可以了
+		 			3、你的IDE是否开启了自动编译
+		 			4、你的入口 application 是否设置setRegisterShutdownHook(false)  如果设置了  则将无法自动重启
+		 	4、默认情况下，/META-INF/maven，/META-INF/resources，/resources，/static，/templates，/public这些文件夹下的文件修改不会使应用重启，但是会重新加载
+		 	因为 devtools 内嵌了一个LiveReload server  当资源发生变化时 浏览器刷新
+		 	 如果想要改变默认设置可以设置不重启的目录  spring.devtools.restart.exclude=static/**,public/**，这样的话，就只有这两个目录下的文件修改不会导致restart操作了
+		 	 如果要保持默认 但添加其他要排除的目录：spring.devtools.restart.addition-exclude=.....
+		 	 如果想要将非classpath目录下的文件发生改变后重启则需要使用：spring.devtools.restart.addition.path =....   这样devtools 就会将该目录加入监听范围
+			5、当然也可以关闭自动重启
+			具体配置文件的配置：spring.devtools.restart.enabled=false
+			java入口类的配置：main方法内 加：System.setProperty("spring.devtools.restart.enabled","false");
+
+
+		 -->
+
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-devtools</artifactId>-->
+			<!--<optional>true</optional>-->
+			<!--&lt;!&ndash;<scope>true</scope>&ndash;&gt;-->
+		<!--</dependency>-->
 		<!--<dependency>-->
 			<!--<groupId>org.slf4j</groupId>-->
 			<!--<artifactId>slf4j-api</artifactId>-->
@@ -106,7 +146,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                <!--<configuration>-->
+                    <!--<fork>true</fork>-->
+					<!--<jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>-->
+                <!--</configuration>-->
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<executable>${JAVA8_HOME}/bin/javac</executable>
+				</configuration>
+			</plugin>
+
 		</plugins>
 		<!--<resources>-->
 			<!--<resource>-->

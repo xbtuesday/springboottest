@@ -34,6 +34,7 @@ public class Demo1Controller {
     public String userList( HttpServletRequest request,ModelMap modelMap){
         List<User> userlist = userService.getuserlist();
         HttpSession session = request.getSession();
+        System.out.println("hello span");
         modelMap.addAttribute("userList",userlist);
         return "user/userList";
     }

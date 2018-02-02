@@ -11,9 +11,6 @@ spring:
     encoding: UTF-8
     content-type: text/html
     cache: false
-    check-template: true
-    check-template-location: true
-
 
 mybatis:
     mapperLocations:  classpath:/mapper/**/*.xml
